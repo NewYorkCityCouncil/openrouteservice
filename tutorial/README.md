@@ -67,8 +67,8 @@ curl -o ors-docker/files/new-york-latest.osm.pbf https://download.geofabrik.de/n
 
 Once the ORS API is ready, you can interact with it using the provided:
 
-- **R script** (e.g., `python-walkthrough.R`)
-- **Python script** (e.g., `r-walkthorugh.py`)
+- **R script** (e.g., `r-walkthrough.R`)
+- **Python script** (e.g., `python-walkthorugh.py`)
 
 These scripts should contain sample requests such as directions, distance matrix, or isochrones. Make sure they point to your local instance at `http://localhost:8080/ors`.
 
