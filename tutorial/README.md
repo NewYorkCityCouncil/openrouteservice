@@ -1,18 +1,74 @@
-This directory contains instructions on how to run the OpenRouteService API using Docker and call the API using R and Python.
 
-To run the OpenRouteService API using Docker, you need to have Docker installed on your computer. You can download it from [Docker's official website](https://www.docker.com/products/docker-desktop).
+# OpenRouteService API with Docker
 
-Then you need to clone the OpenRouteService repository from GitHub. You can do this by running the following command in your terminal:
+This directory provides instructions on how to:
+
+1. Run the **OpenRouteService (ORS)** API using **Docker**.
+2. Access and use the API using **R** and **Python** scripts.
+
+
+## Step 1: Clone the OpenRouteService Repository
+
+Open a terminal and run the following command:
 
 ```bash
+git clone https://github.com/NewYorkCityCouncil/openrouteservice
+cd openrouteservice
+```
 
-Start by making sure the docker daemon is running. You can start it by just opening Docker Desktop on your computer.
+---
 
-Then open a terminal and navigate to the openrouteservice directory.
+## Step 2: Download Map Data for New York
 
-Then run docker compose up -d to start the OpenRouteService API in a Docker container.
+Download the New York map data from [Geofabrik](https://download.geofabrik.de/north-america/us/new-york.html) into the appropriate folder:
 
-It will take a bit of time for the container and API to start up. You can check if it is ready by running: curl http://127.0.0.1:8080/ors/v2/health
+```bash
+curl -o ors-docker/files/new-york-latest.osm.pbf https://download.geofabrik.de/north-america/us/new-york-latest.osm.pbf
+```
 
-When it prints {"status":"ready"} you can start using the API.
+---
+
+## Step 3: Start the Docker Container
+
+1. **Ensure Docker is running**  
+   Launch Docker Desktop to start the Docker daemon.
+
+2. **Navigate to the cloned ORS repository** (if not already there):
+
+   ```bash
+   cd openrouteservice
+   ```
+
+3. **Start the ORS container**:
+
+   ```bash
+   docker compose up -d
+   ```
+
+   > This process may take a few minutes depending on your system.
+
+4. **Check API status**:
+
+   Run the following command to check if the ORS API is ready:
+
+   ```bash
+   curl http://127.0.0.1:8080/ors/v2/health
+   ```
+
+   If the API is running, the response should be:
+
+   ```json
+   {"status":"ready"}
+   ```
+
+---
+
+## Step 4: Access the API using R or Python
+
+Once the ORS API is ready, you can interact with it using the provided:
+
+- **R script** (e.g., `ors_example.R`)
+- **Python script** (e.g., `ors_example.py`)
+
+These scripts should contain sample requests such as directions, distance matrix, or isochrones. Make sure they point to your local instance at `http://localhost:8080/ors`.
 
