@@ -12,26 +12,24 @@ COPY ors-engine/pom.xml /tmp/ors/ors-engine/pom.xml
 COPY pom.xml /tmp/ors/pom.xml
 COPY ors-report-aggregation/pom.xml /tmp/ors/ors-report-aggregation/pom.xml
 COPY ors-test-scenarios/pom.xml /tmp/ors/ors-test-scenarios/pom.xml
-COPY ors-benchmark/pom.xml /tmp/ors/ors-benchmark/pom.xml
-COPY mvnw /tmp/ors/mvnw
-COPY .mvn /tmp/ors/.mvn
 
 # Build the project
-RUN ./mvnw -pl 'ors-api,ors-engine' -q dependency:go-offline
+RUN mvn -pl '!ors-test-scenarios,!ors-report-aggregation' -q dependency:go-offline
 
 COPY ors-api /tmp/ors/ors-api
 COPY ors-engine /tmp/ors/ors-engine
 
 # Build the project
-RUN ./mvnw -pl 'ors-api,ors-engine' \
+RUN mvn -pl '!ors-test-scenarios,!ors-report-aggregation' \
     -q clean package -DskipTests -Dmaven.test.skip=true
 
-FROM docker.io/golang:1.24.2-alpine3.21 AS build-go
+FROM docker.io/maven:3.9.9-amazoncorretto-21-alpine AS build-go
 # Setup the target system with the right user and folders.
-RUN GO111MODULE=on go install github.com/mikefarah/yq/v4@v4.45.1
+RUN apk add --no-cache go && \
+    GO111MODULE=on go install github.com/mikefarah/yq/v4@v4.44.5
 
 # build final image, just copying stuff inside
-FROM docker.io/amazoncorretto:21.0.6-alpine3.21 AS publish
+FROM docker.io/amazoncorretto:21.0.4-alpine3.20 AS publish
 
 # Build ARGS
 ARG UID=1000
@@ -55,7 +53,7 @@ RUN apk update && apk add --no-cache bash=~5 jq=~1 openssl=~3 && \
 COPY --chown=ors:ors --from=build /tmp/ors/ors-api/target/ors.jar /ors.jar
 COPY --chown=ors:ors ./$OSM_FILE /heidelberg.test.pbf
 COPY --chown=ors:ors ./docker-entrypoint.sh /entrypoint.sh
-COPY --chown=ors:ors --from=build-go /go/bin/yq /bin/yq
+COPY --chown=ors:ors --from=build-go /root/go/bin/yq /bin/yq
 
 # Copy the example config files to the build folder
 COPY --chown=ors:ors ./ors-config.yml /example-ors-config.yml

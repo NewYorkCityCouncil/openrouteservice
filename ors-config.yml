@@ -6,9 +6,9 @@ ors:
   engine:
     profile_default:
       build:
-        source_file: ors-api/src/test/files/heidelberg.test.pbf
+        source_file: ors-docker/files/new-york-latest.osm.pbf
     profiles:
-      driving-car:
+      foot-walking:
         enabled: true
 
 ################################################################################

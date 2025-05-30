@@ -94,6 +94,7 @@ public class RouteResultBuilder {
             }
 
             result.addSegment(createRouteSegment(path, request, getNextResponseFirstStepPoints(responses, ri)));
+            result.setGraphDate(response.getHints().getString("data.date", "0000-00-00T00:00:00Z"));
         }
 
         result.calculateRouteSummary(request);
@@ -146,6 +147,7 @@ public class RouteResultBuilder {
                 result.resetSegments();
             }
 
+            result.setGraphDate(response.getHints().getString("data.date", "0000-00-00T00:00:00Z"));
             resultSet[response.getAll().indexOf(path)] = result;
 
             if (request.getSearchParameters().isTimeDependent()) {

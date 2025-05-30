@@ -24,7 +24,7 @@ services:
       #- ./logs:/home/ors/logs  # Mount logs directory individually
       #- ./files:/home/ors/files  # Mount files directory individually
     environment:
-      REBUILD_GRAPHS: False  # Set to True to rebuild graphs on container start.
+      REBUILD_GRAPHS: True  # Set to True to rebuild graphs on container start.
       CONTAINER_LOG_LEVEL: INFO  # Log level for the container. Possible values: DEBUG, INFO, WARNING, ERROR, CRITICAL
       # If you don't want the default ors-config.yml you can specify a custom file name, that should match the file in
       # your 'config' volume mount.
@@ -47,10 +47,10 @@ services:
       # See the ors-config.env file for more options.
       # To have a configuration file-less container, uncomment at least the following properties.
       # The values are examples and provide the default configuration.
-      #ors.engine.profile_default.build.source_file: /home/ors/files/example-heidelberg.test.pbf
-      #ors.engine.profile_default.graph_path: /home/ors/graphs
-      #ors.engine.elevation.cache_path: /home/ors/elevation_cache
-      #ors.engine.profiles.car.enabled: true
+      ors.engine.profile_default.build.source_file: /home/ors/files/new-york-latest.osm.pbf
+      ors.engine.profile_default.graph_path: /home/ors/graphs
+      ors.engine.elevation.cache_path: /home/ors/elevation_cache
+      ors.engine.profiles.foot-walking.enabled: true
       #logging.level.org.heigit: INFO
 
     # ----------------- ENV file configuration ------------------- #

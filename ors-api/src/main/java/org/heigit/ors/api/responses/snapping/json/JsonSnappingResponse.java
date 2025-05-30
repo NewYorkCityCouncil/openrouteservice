@@ -28,6 +28,7 @@ public class JsonSnappingResponse extends SnappingResponse {
         super(result);
         locations = constructLocations(result);
         responseInformation = new SnappingResponseInfo(request, systemMessageProperties, endpointsProperties);
+        responseInformation.setGraphDate(result.getGraphDate());
     }
 
     private List<JSONLocation> constructLocations(SnappingResult result) {

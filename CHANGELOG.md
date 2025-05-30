@@ -24,14 +24,8 @@ This is how a Changelog entry should look like:
 RELEASING:
 Releasing is documented in RELEASE.md
 -->
-
 ## [unreleased]
-
 ### Added
-- maven wrapper to project ([#1973](https://github.com/GIScience/openrouteservice/issues/1973))
-- include OSM data version (`osm_date`) in the API response ([#1192](https://github.com/GIScience/openrouteservice/issues/1192))
-- added documentation for isochrone attributes ([#846](https://github.com/GIScience/openrouteservice/issues/846))
-- include `graph_date` and `osm_date` in the GPX response ([#2055](https://github.com/GIScience/openrouteservice/issues/2055))
 
 ### Changed
 
@@ -40,59 +34,9 @@ Releasing is documented in RELEASE.md
 ### Removed
 
 ### Fixed
-- fix http pooling for matrix generation requests ([#2059](https://github.com/GIScience/openrouteservice/pull/2059))
-- bump deprecated CodeQL and failing Grype scan GitHub actions to their current versions ([#2061](https://github.com/GIScience/openrouteservice/pull/2061))
-- avoid routing on roads with access reserved to customers ([#2060](https://github.com/GIScience/openrouteservice/pull/2060))
-- required dynamic weights for driving-hgv with `hazmat` `false` or other default Vehicle init values ([#2071](https://github.com/GIScience/openrouteservice/pull/2071))
-
-### Security
-
-
-## [9.2.0] - 2025-05-06
-
-### Added
-- minio option to graph repo client ([#2050](https://github.com/GIScience/openrouteservice/pull/2050))
-- hint to use yaml editor in docs ([#1836](https://github.com/GIScience/openrouteservice/issues/1836))
-- `access = permit` OSM tag as known access restriction type ([#2013](https://github.com/GIScience/openrouteservice/issues/2013))
-- matrix generator for performance benchmarking ([#2038](https://github.com/GIScience/openrouteservice/pull/2038))
-
-### Fixed
-- update outdated dockerfile base images and add a more robust native golang base image ([#2027](https://github.com/GIScience/openrouteservice/pull/2027))
-- graph build date missing in case route is not found ([#2020](https://github.com/GIScience/openrouteservice/pull/2020))
-- github action build default builder image failing ([#2032](https://github.com/GIScience/openrouteservice/issues/2032)) 
-- wrong example in docs of extra-info 'waycategory' ([#1797](https://github.com/GIScience/openrouteservice/issues/1797))
-- population data link in docs ([#1624](https://github.com/GIScience/openrouteservice/issues/1624))
-- accept upper and lower case booleans for REBUILD_GRAPHS within the docker setup ([#2028](https://github.com/GIScience/openrouteservice/pull/2028))
-- correct available features in custom-model docs ([#2033](https://github.com/GIScience/openrouteservice/issues/2033))
-- prevent ferry speed derived from the maxspeed OSM tag from exceeding the maximum possible encoder value ([#2030](https://github.com/GIScience/openrouteservice/issues/2030)) 
-
-### Security
-
-## [9.1.2] - 2025-04-10
-
-### Fixed
-- pass extra_info when querying round_trip ([#1976](https://github.com/GIScience/openrouteservice/issues/1976))
-- repair broken integration tests with by pining buildkit 0.15 ([#2003](https://github.com/GIScience/openrouteservice/pull/2003))
-- elevation set to false not taken into account ([#1967](https://github.com/GIScience/openrouteservice/issues/1967))
-- make gpx response adhere to standard and set version to 1.1 ([#2004](https://github.com/GIScience/openrouteservice/issues/2004))
-- return correct extra info label for 'waytype' ([#1579](https://github.com/GIScience/openrouteservice/issues/1579))
-- enable passing of barriers tagged with `access = permit` ([#2002](https://github.com/GIScience/openrouteservice/pull/2002))
-- typos in Turkish translation ([#2016](https://github.com/GIScience/openrouteservice/pull/2016))
-- deployment of backend docs to GitHub pages ([#2022](https://github.com/GIScience/openrouteservice/pull/2022))
-- backend docs version number and warning for public folder asset links ([#2023](https://github.com/GIScience/openrouteservice/pull/2023))
-
-### Security
-- upgraded spring-boot-starter-parent to 3.4.4 due to [tomcat CVE](https://github.com/advisories/GHSA-83qj-6fr2-vhqg)
-
-## [9.1.1] - 2025-03-13
-
-### Changed
-- move RELEASING section from CHANGELOG.md to new RELEASE.md ([#1972](https://github.com/GIScience/openrouteservice/pull/1972))
-- refactor: adapt value range of CsvGraphStorage ([#1969](https://github.com/GIScience/openrouteservice/pull/1969))
-
-### Fixed
 - preparation_mode flag ([#1966](https://github.com/GIScience/openrouteservice/pull/1966))
-- ORS_CONFIG_LOCATION doesn't log with wrong paths ([#1816](https://github.com/GIScience/openrouteservice/issues/1816))
+
+### Security
 
 
 ## [9.1.0] - 2025-01-29
@@ -906,10 +850,8 @@ are attached to roads. ([Issue #162](https://github.com/GIScience/openrouteservi
 - Fix bug in RPHAST when location lies on a oneway road.
 - Consider turn restrictions if optimized=false is passed.
 
-[unreleased]: https://github.com/GIScience/openrouteservice/compare/v9.2.0...HEAD
-[9.2.0]: https://github.com/GIScience/openrouteservice/compare/v9.1.2...v9.2.0
-[9.1.2]: https://github.com/GIScience/openrouteservice/compare/v9.1.1...v9.1.2
-[9.1.1]: https://github.com/GIScience/openrouteservice/compare/v9.1.0...v9.1.1
+[unreleased]: https://github.com/GIScience/openrouteservice/compare/v9.1.0...HEAD
+
 [9.1.0]: https://github.com/GIScience/openrouteservice/compare/v9.0.0...v9.1.0
 [9.0.0]: https://github.com/GIScience/openrouteservice/compare/v8.2.0...v9.0.0
 [8.2.0]: https://github.com/GIScience/openrouteservice/compare/v8.1.2...v8.2.0

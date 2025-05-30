@@ -266,5 +266,30 @@ public class ConfigLookupTest extends ContainerInitializer {
             OrsApiHelper.assertProfilesLoaded(container, Map.of("cycling-road", true));
             container.stop();
         }
+
+        /**
+         * ors-config-location-to-nonexisting-file.sh
+         * The profile configured as run argument should be preferred over environment variable.
+         * The default yml file should not be used when ORS_CONFIG_LOCATION is set,
+         * even if the file does not exist. Fallback to default ors-config.yml is not desired!
+         */
+        @MethodSource("utils.ContainerInitializer#ContainerTestImageBareImageStream")
+        @ParameterizedTest(name = "{0}")
+        @Execution(ExecutionMode.CONCURRENT)
+        void testOrsConfigLocationToNonExistingFile(ContainerInitializer.ContainerTestImageBare targetImage) {
+            GenericContainer<?> container = initContainer(targetImage, false, "testOrsConfigLocationToNonExistingFile");
+            container.setCommand(targetImage.getCommand("200M").toArray(new String[0]));
+            container.addEnv("ORS_CONFIG_LOCATION", "/home/ors/openrouteservice/ors-config-that-does-not-exist.yml");
+            container.waitingFor(waitStrategyWithLogMessage(List.of(
+                    "Configuration lookup started.",
+                    "Configuration file set by environment variable.",
+                    "Config file '/home/ors/openrouteservice/ors-config-that-does-not-exist.yml' not found.",
+                    "Configuration lookup finished.",
+                    "No profiles configured. Exiting."
+            ).toArray(new String[0])));
+            container.start();
+            Assertions.assertTrue(container.isRunning());
+            container.stop();
+        }
     }
 }

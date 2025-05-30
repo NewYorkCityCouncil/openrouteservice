@@ -19,7 +19,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import lombok.Getter;
 import org.heigit.ors.api.config.EndpointsProperties;
 import org.heigit.ors.api.config.SystemMessageProperties;
 import org.heigit.ors.api.requests.routing.RouteRequest;
@@ -33,11 +32,10 @@ import java.util.List;
 
 @XmlRootElement(name = "gpx")
 @Schema(name = "gpx")
-@Getter
 public class GPXRouteResponse extends RouteResponse {
 
     @XmlAttribute(name = "version")
-    private static final String GPX_VERSION = "1.1";
+    private static final String GPX_VERSION = "1.0";
 
     @XmlAttribute(name = "creator")
     private static final String GPX_CREATOR = "openrouteservice";
@@ -75,17 +73,5 @@ public class GPXRouteResponse extends RouteResponse {
 
     public List<GPXRouteElement> getGpxRouteElements() {
         return routes;
-    }
-
-    public static String getGpxVersion() {
-        return GPX_VERSION;
-    }
-
-    public static String getGpxCreator() {
-        return GPX_CREATOR;
-    }
-
-    public static String getXmlnsLink() {
-        return XMLNS_LINK;
     }
 }

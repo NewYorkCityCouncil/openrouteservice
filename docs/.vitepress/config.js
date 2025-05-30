@@ -71,7 +71,7 @@ export default withMermaid(defineVersionedConfig({
         sidebar: {
             '/': [
                 {
-                    text: `Home - v${process.env.npm_package_version}`, link: '/',
+                    text: 'Home - v9.0.0', link: '/',
                     items: [
                         {text: 'Getting Started', link: '/getting-started'},
                         {
@@ -291,7 +291,6 @@ export default withMermaid(defineVersionedConfig({
                                 {text: 'Tag Filtering', link: '/technical-details/tag-filtering'},
                                 {text: 'Graph Management', link: '/technical-details/graph-repo-client/'},
                                 {text: 'Integration Tests', link: '/technical-details/integration-tests'},
-                                {text: 'API Benchmarks', link: '/technical-details/api-benchmarks'}
                             ]
                         },
                         {text: 'FAQ', link: '/frequently-asked-questions'}
@@ -315,7 +314,7 @@ export default withMermaid(defineVersionedConfig({
     },
 
     versioning: {
-        latestVersion: `${process.env.npm_package_version} (latest)`,
+        latestVersion: "v9.0.0 (latest)",
         sidebars: {
             processSidebarURLs: true,
             sidebarPathResolver: (version) => `.vitepress/sidebars/versioned/${version}.json`,

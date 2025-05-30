@@ -33,7 +33,7 @@ import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.heigit.ors.routing.graphhopper.extensions.manage.RepoManagerTestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Testcontainers(disabledWithoutDocker = true)
+@Testcontainers
 @ExtendWith(TestcontainersExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class HttpRepoManagerTest {

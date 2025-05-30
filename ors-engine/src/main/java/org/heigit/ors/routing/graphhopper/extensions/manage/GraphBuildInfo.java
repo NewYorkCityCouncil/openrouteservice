@@ -36,9 +36,4 @@ public class GraphBuildInfo {
         }
         return this;
     }
-
-    public GraphBuildInfo withRemoteUriString(String remoteUri) {
-        this.remoteUri = URI.create(remoteUri);
-        return this;
-    }
 }

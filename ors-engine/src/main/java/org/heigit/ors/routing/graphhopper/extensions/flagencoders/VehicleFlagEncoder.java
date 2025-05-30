@@ -95,9 +95,7 @@ public abstract class VehicleFlagEncoder extends ORSAbstractFlagEncoder {
 
         intendedValues.add("yes");
         intendedValues.add("permissive");
-        // The following entries are needed to allow the passing of barriers
-        intendedValues.add("destination");
-        intendedValues.add("permit");
+        intendedValues.add("destination");  // This is needed to allow the passing of barriers that are marked as destination
 
         passByDefaultBarriers.add("gate");
         passByDefaultBarriers.add("lift_gate");

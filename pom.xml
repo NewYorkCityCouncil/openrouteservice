@@ -4,14 +4,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version>
+        <version>3.4.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.heigit.ors</groupId>
     <artifactId>openrouteservice</artifactId>
-    <version>9.3.0-SNAPSHOT</version>
+    <version>9.1.0</version>
     <packaging>pom</packaging>
     <name>openrouteservice</name>
     <url>https://openrouteservice.org</url>
@@ -31,10 +31,14 @@
         <module>ors-api</module>
         <module>ors-report-aggregation</module>
         <module>ors-test-scenarios</module>
-        <module>ors-benchmark</module>
     </modules>
 
     <properties>
+        <!--
+            A default for packagingValue is needed, if profiles other than buildWar or buildFatJar are used, e.g. apitests.
+            The value is set/overridden in the profiles buildWar and buildFatJar, e.g.
+                mvn clean package -PbuildWar
+         -->
         <packagingValue>jar</packagingValue>
         <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -45,12 +49,12 @@
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
 
         <!-- switch graphhopper versions to enable debugging -->
-        <graphhopper.version>v4.9.8</graphhopper.version>
+        <graphhopper.version>v4.9.6</graphhopper.version>
 <!--        <graphhopper.version>4.9-SNAPSHOT</graphhopper.version>-->
         <lombok.version>1.18.34</lombok.version>
         <slf4j.version>2.0.13</slf4j.version>
         <log4j.version>2.22.1</log4j.version>
-        <springdoc-openapi-starter.version>2.8.6</springdoc-openapi-starter.version>
+        <springdoc-openapi-starter.version>2.8.0</springdoc-openapi-starter.version>
         <swagger-core.version>2.2.27</swagger-core.version>
         <swagger-parser.version>2.1.24</swagger-parser.version>
         <snakeyaml.version>2.2</snakeyaml.version>
@@ -82,18 +86,15 @@
 
         <jupiter.version>5.11.4</jupiter.version>
         <mockito.version>5.12.0</mockito.version>
-        <rest-assured.version>5.5.1</rest-assured.version>
-        <testcontainers.version>1.21.0</testcontainers.version>
+        <rest-assured.version>5.5.0</rest-assured.version>
+        <testcontainers.version>1.20.4</testcontainers.version>
         <mockito-core-version>3.12.4</mockito-core-version>
         <javax.ws.rs-api-version>2.1.1</javax.ws.rs-api-version>
         <jsr311-api-version>1.1.1</jsr311-api-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spotless.version>2.27.2</spotless.version>
         <surefire.version>3.5.2</surefire.version>
-        <httpclient5.version>5.4.4</httpclient5.version>
-        <gatling.version>3.13.4</gatling.version>
-        <gatling-maven-plugin.version>4.13.0</gatling-maven-plugin.version>
-        <commons-cli.version>1.5.0</commons-cli.version>
+
         <sonar.projectKey>GIScience_openrouteservice</sonar.projectKey>
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.organization>giscience</sonar.organization>
@@ -337,12 +338,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-csv</artifactId>
-                <version>${fasterxml.jackson.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${fasterxml.jackson.version}</version>
@@ -491,17 +486,6 @@
                 <groupId>io.rest-assured</groupId>
                 <artifactId>rest-assured</artifactId>
                 <version>${rest-assured.version}</version>
-                <exclusions>
-                    <!-- Conflicts with httpclient5 which has a higher patch version. -->
-                    <exclusion>
-                        <groupId>org.apache.httpcomponents</groupId>
-                        <artifactId>httpclient</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.apache.httpcomponents</groupId>
-                        <artifactId>httpcore</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
@@ -537,34 +521,7 @@
                 <artifactId>nginx</artifactId>
                 <version>${testcontainers.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>minio</artifactId>
-                <version>${testcontainers.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents.client5</groupId>
-                <artifactId>httpclient5</artifactId>
-                <version>${httpclient5.version}</version>
-            </dependency>
 
-            <dependency>
-                <groupId>org.apache.httpcomponents.client5</groupId>
-                <artifactId>httpclient5-fluent</artifactId>
-                <version>${httpclient5.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.gatling.highcharts</groupId>
-                <artifactId>gatling-charts-highcharts</artifactId>
-                <version>${gatling.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-cli</groupId>
-                <artifactId>commons-cli</artifactId>
-                <version>${commons-cli.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 

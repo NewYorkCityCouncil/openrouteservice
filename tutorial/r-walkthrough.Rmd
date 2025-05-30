@@ -1,0 +1,76 @@
+---
+title: "r-walkthrough"
+output: html_document
+date: "2025-05-29"
+---
+
+```{r setup, include=FALSE}
+install.packages("openrouteservice")
+install.packages("leaflet")
+install.packages("geojsonio")
+```
+
+```{r}
+library(openrouteservice)
+library(leaflet)
+library(geojsonio)
+```
+
+```{r}
+options(openrouteservice.url = "http://localhost:8080/ors")
+```
+
+```{r}
+coordinates <- list(c(-73.97875, 40.72208), c(-73.98631, 40.72131))
+```
+
+```{r}
+route <- ors_directions(coordinates, profile="foot-walking", format="geojson")
+```
+
+```{r}
+leaflet() %>%
+  addTiles() %>%
+  # center at first point, with zoom level of your choice (e.g. 15)
+  setView(lng = coordinates[[1]][1], lat = coordinates[[1]][2], zoom = 15) %>%
+  addGeoJSON(route, color = "blue", weight = 4)
+```
+
+```{r}
+coordinate <- c(-73.97875, 40.72208)
+```
+
+```{r}
+iso = ors_isochrones(coordinate, profile = 'foot-walking', range = c(900))
+```
+
+
+```{r}
+leaflet() %>%
+  addTiles() %>%
+  # center at first point, with zoom level of your choice (e.g. 15)
+  setView(lng = coordinate[1], lat = coordinate[2], zoom = 13) %>%
+  addGeoJSON(iso$features, color = "blue", weight = 4)
+```
+
+```{r}
+coords <- list(
+  c(-74.00782277832863, 40.71299873734118),
+  c(-74.00552620175422, 40.71342967094514),
+  c(-74.00360397186132, 40.71313254481554),
+  c(-74.00507241847856, 40.711027500941185)
+)
+```
+
+```{r}
+matrix = ors_matrix(coords, metrics = c("duration", "distance"), units = "mi", profile = 'foot-walking')
+```
+
+```{r}
+matrix$durations
+```
+
+```{r}
+matrix$distances
+```
+

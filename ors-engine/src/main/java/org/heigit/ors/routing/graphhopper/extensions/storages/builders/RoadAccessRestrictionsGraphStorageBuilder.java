@@ -61,8 +61,6 @@ public class RoadAccessRestrictionsGraphStorageBuilder extends AbstractGraphStor
         restrictedValues.add("customers");
         restrictedValues.add("emergency");
         restrictedValues.add("permissive");
-        restrictedValues.add("delivery");
-        restrictedValues.add("permit");
 
         permissiveValues.add("yes");
         permissiveValues.add("designated");
@@ -78,9 +76,9 @@ public class RoadAccessRestrictionsGraphStorageBuilder extends AbstractGraphStor
      * @return The RoadAccessRestrictionStorage object created as part of the initialisation
      * @throws Exception
      */
-    public GraphExtension init(GraphHopper graphhopper, int profileType) throws IllegalStateException {
+    public GraphExtension init(GraphHopper graphhopper, int profileType) throws Exception {
         if (storage != null)
-            throw new IllegalStateException("GraphStorageBuilder has been already initialized.");
+            throw new Exception("GraphStorageBuilder has been already initialized.");
 
         ExtendedStorageProperties parameters;
         parameters = this.parameters;
@@ -102,9 +100,9 @@ public class RoadAccessRestrictionsGraphStorageBuilder extends AbstractGraphStor
      * @return The RoadAccessRestrictionStorage object created as part of the initialisation
      * @throws Exception
      */
-    public GraphExtension init(GraphHopper graphhopper) throws IllegalStateException {
+    public GraphExtension init(GraphHopper graphhopper) throws Exception {
         if (storage != null)
-            throw new IllegalStateException("GraphStorageBuilder has been already initialized.");
+            throw new Exception("GraphStorageBuilder has been already initialized.");
 
         ExtendedStorageProperties parameters;
         parameters = this.parameters;
@@ -168,8 +166,6 @@ public class RoadAccessRestrictionsGraphStorageBuilder extends AbstractGraphStor
                 restrictions = isAccessAllowed(way, VAL_BICYCLE) ? 0 : getRestrictionType(way, VAL_BICYCLE);
             if (RoutingProfileType.isPedestrian(profileType))
                 restrictions = isAccessAllowed(way, "foot") ? 0 : getRestrictionType(way, "foot");
-            if (profileType == RoutingProfileType.UNKNOWN)
-                restrictions = getRestrictionType(way, VAL_ACCESS);
         }
     }
 
@@ -234,7 +230,6 @@ public class RoadAccessRestrictionsGraphStorageBuilder extends AbstractGraphStor
                 case "permissive" -> res |= AccessRestrictionType.PERMISSIVE;
                 case "delivery" -> res |= AccessRestrictionType.DELIVERY;
                 case "customers" -> res |= AccessRestrictionType.CUSTOMERS;
-                case "permit" -> res |= AccessRestrictionType.PERMIT;
                 default -> {
                 }
             }

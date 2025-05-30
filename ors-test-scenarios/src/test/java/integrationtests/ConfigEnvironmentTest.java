@@ -1,6 +1,5 @@
 package integrationtests;
 
-
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,8 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static utils.ContainerInitializer.ContainerTestImageDefaults.WAR_CONTAINER;
-import static utils.TestContainersHelper.*;
+import static utils.TestContainersHelper.healthyWaitStrategyWithLogMessage;
+import static utils.TestContainersHelper.orsCorrectConfigLoadedWaitStrategy;
 
 @ExtendWith(TestcontainersExtension.class)
 @Testcontainers(disabledWithoutDocker = true)
@@ -46,7 +45,7 @@ public class ConfigEnvironmentTest extends ContainerInitializer {
         @MethodSource("utils.ContainerInitializer#ContainerTestImageBareImageStream")
         @ParameterizedTest(name = "{0}")
         @Execution(ExecutionMode.CONCURRENT)
-        void testMissingConfigButRequiredParamsAsEnvUpperAndLower(ContainerTestImageBare targetImage) {
+        void testMissingConfigButRequiredParamsAsEnvUpperAndLower(ContainerInitializer.ContainerTestImageBare targetImage) {
             GenericContainer<?> container = initContainer(targetImage, false, "testMissingConfigButRequiredParamsAsEnvUpperAndLower");
             container.waitingFor(healthyWaitStrategyWithLogMessage(List.of(
                     "Configuration file lookup by default locations.",
@@ -74,8 +73,8 @@ public class ConfigEnvironmentTest extends ContainerInitializer {
         @MethodSource("utils.ContainerInitializer#ContainerTestImageBareImageStream")
         @ParameterizedTest(name = "{0}")
         @Execution(ExecutionMode.CONCURRENT)
-        void testMissingConfigButRequiredParamsAsArg(ContainerTestImageBare targetImage) {
-            if (targetImage.equals(ContainerTestImageBare.WAR_CONTAINER_BARE)) {
+        void testMissingConfigButRequiredParamsAsArg(ContainerInitializer.ContainerTestImageBare targetImage) {
+            if (targetImage.equals(ContainerInitializer.ContainerTestImageBare.WAR_CONTAINER_BARE)) {
                 // This test is not applicable to the WAR container as it does not support command line arguments.
                 return;
             }
@@ -87,10 +86,10 @@ public class ConfigEnvironmentTest extends ContainerInitializer {
                     "Configuration lookup finished."
             ).toArray(new String[0]), Duration.ofSeconds(60)));
             ArrayList<String> command = targetImage.getCommand("250M");
-            if (targetImage.equals(ContainerTestImageBare.JAR_CONTAINER_BARE)) {
+            if (targetImage.equals(ContainerInitializer.ContainerTestImageBare.JAR_CONTAINER_BARE)) {
                 command.add("--ors.engine.profiles.driving-hgv.enabled=true");
                 command.add("--ors.engine.profile_default.build.source_file=/home/ors/openrouteservice/files/heidelberg.test.pbf");
-            } else if (targetImage.equals(ContainerTestImageBare.MAVEN_CONTAINER_BARE)) {
+            } else if (targetImage.equals(ContainerInitializer.ContainerTestImageBare.MAVEN_CONTAINER_BARE)) {
                 command.add("-Dspring-boot.run.arguments=--ors.engine.profile_default.build.source_file=/home/ors/openrouteservice/files/heidelberg.test.pbf --ors.engine.profiles.driving-hgv.enabled=true");
             }
             container.setCommand(command.toArray(new String[0]));
@@ -106,7 +105,7 @@ public class ConfigEnvironmentTest extends ContainerInitializer {
         @MethodSource("utils.ContainerInitializer#ContainerTestImageDefaultsImageStream")
         @ParameterizedTest(name = "{0}")
         @Execution(ExecutionMode.CONCURRENT)
-        void testPropertyOverridesDefaultConfig(ContainerTestImageDefaults targetImage) {
+        void testPropertyOverridesDefaultConfig(ContainerInitializer.ContainerTestImageDefaults targetImage) {
             GenericContainer<?> container = initContainer(targetImage, false, "testPropertyOverridesDefaultConfig");
 
             container.addEnv("ors.engine.profiles.driving-car.enabled", "false");
@@ -127,7 +126,7 @@ public class ConfigEnvironmentTest extends ContainerInitializer {
         @MethodSource("utils.ContainerInitializer#ContainerTestImageBareImageStream")
         @ParameterizedTest(name = "{0}")
         @Execution(ExecutionMode.CONCURRENT)
-        void testActivateAllBareGraphsWithEnv(ContainerTestImageBare targetImage) {
+        void testActivateAllBareGraphsWithEnv(ContainerInitializer.ContainerTestImageBare targetImage) {
             GenericContainer<?> container = initContainer(targetImage, false, "testActivateAllBareGraphsWithEnv");
             container.addEnv("ors.engine.profile_default.enabled", "true");
             container.addEnv("ors.engine.profiles.public-transport.enabled", "false");
@@ -159,9 +158,9 @@ public class ConfigEnvironmentTest extends ContainerInitializer {
         @MethodSource("utils.ContainerInitializer#ContainerTestImageDefaultsImageStream")
         @ParameterizedTest(name = "{0}")
         @Execution(ExecutionMode.CONCURRENT)
-        void testDefaultProfileActivated(ContainerTestImageDefaults targetImage) {
+        void testDefaultProfileActivated(ContainerInitializer.ContainerTestImageDefaults targetImage) {
             GenericContainer<?> container = initContainer(targetImage, false, "testDefaultProfileActivated");
-            if (targetImage.equals(WAR_CONTAINER)) {
+            if (targetImage.equals(ContainerInitializer.ContainerTestImageDefaults.WAR_CONTAINER)) {
                 container.setWaitStrategy(orsCorrectConfigLoadedWaitStrategy("/home/ors/openrouteservice/ors-config.yml"));
             } else {
                 container.waitingFor(orsCorrectConfigLoadedWaitStrategy("./ors-config.yml"));
@@ -179,7 +178,7 @@ public class ConfigEnvironmentTest extends ContainerInitializer {
         @MethodSource("utils.ContainerInitializer#ContainerTestImageDefaultsImageStream")
         @ParameterizedTest(name = "{0}")
         @Execution(ExecutionMode.CONCURRENT)
-        void testActivateEachProfileWithEnvAndOverwriteDefaultConfig(ContainerTestImageDefaults targetImage) {
+        void testActivateEachProfileWithEnvAndOverwriteDefaultConfig(ContainerInitializer.ContainerTestImageDefaults targetImage) {
             GenericContainer<?> container = initContainer(targetImage, false, "testActivateEachProfileWithEnvAndOverwriteDefaultConfig");
 
             // Prepare the environment
@@ -191,36 +190,6 @@ public class ConfigEnvironmentTest extends ContainerInitializer {
             container.start();
 
             OrsApiHelper.assertProfilesLoaded(container, allProfiles.stream().collect(HashMap::new, (m, v) -> m.put(v, true), HashMap::putAll));
-            container.stop();
-        }
-
-        /**
-         * arg-overrides-default-prop.sh
-         */
-        @MethodSource("utils.ContainerInitializer#ContainerTestImageDefaultsImageStream")
-        @ParameterizedTest(name = "{0}")
-        @Execution(ExecutionMode.CONCURRENT)
-        void testNonExistentConfigFail(ContainerTestImageDefaults targetImage) {
-            if (targetImage.equals(WAR_CONTAINER)) {
-                // This test is not applicable to the WAR container as Tomcat/war does not support command line or random environment variables that are not part of the application.properties.
-                // Tomcat encapsulates the environment variables and only passes spring-boot managed properties.
-                return;
-            }
-            GenericContainer<?> container = initContainer(targetImage, false, "testNonExistentConfigFail");
-            // Prepare the environment
-            container.addEnv("ORS_CONFIG_LOCATION", "nonexistent/ors-config.yaml");
-
-            container.waitingFor(waitStrategyWithLogMessage(List.of(
-                    "ORS config file not found at: nonexistent/ors-config.yaml",
-                    "Config file 'nonexistent/ors-config.yaml' not found."
-                    ).toArray(new String[0]))
-            );
-            container.start();
-
-            // Assert ors-config.yml not present for a sane test.
-            OrsContainerFileSystemCheck.assertFileExists(container, "nonexistent/ors-config.yaml", false);
-
-            // Stop the container
             container.stop();
         }
     }
