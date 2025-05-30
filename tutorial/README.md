@@ -23,6 +23,7 @@ cd openrouteservice
 Download the New York map data from [Geofabrik](https://download.geofabrik.de/north-america/us/new-york.html) into the appropriate folder:
 
 ```bash
+mkdir -p ors-docker/files
 curl -o ors-docker/files/new-york-latest.osm.pbf https://download.geofabrik.de/north-america/us/new-york-latest.osm.pbf
 ```
 
